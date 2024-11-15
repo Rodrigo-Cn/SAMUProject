@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+class Patient_care(models.Model):
+    date = models.DateField()
+    hour = models.TimeField()
+    location = models.CharField(max_length=70, null=True)

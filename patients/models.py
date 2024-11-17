@@ -7,7 +7,7 @@ class Patient(models.Model):
     district = models.CharField(max_length=40)
     number = models.IntegerField(null=True)
     date_birth = models.DateField()
-    phone = models.CharField(max_length=15,null=True)
+    phone = models.CharField(max_length=15,null=True,unique=True)
     cpf = models.CharField(max_length=11,null=True,unique=True)
 
     def __str__(self):

@@ -5,8 +5,11 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 class MedicineAPI(APIView):
+    permission_classes = [IsAuthenticated]  
+
     def get(self, request):
         name = request.query_params.get('name')
         if name:
@@ -28,6 +31,8 @@ class MedicineAPI(APIView):
             return Response(medicineSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class MedicineAPIDetail(APIView):
+    permission_classes = [IsAuthenticated]  
+    
     def get(self, request, id):
         medicine = get_object_or_404(Medicine ,pk=id)
         medicineSerializer = MedicineSerializer(medicine)

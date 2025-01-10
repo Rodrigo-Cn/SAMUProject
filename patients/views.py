@@ -37,6 +37,8 @@ class PatientViewDetail(APIView):
         patientserializer = PatientSerializer(patient, data=request.data)
         if patientserializer.is_valid():
             return Response(patientserializer.validated_data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)      
 
     def delete(self, request, id):
         patient = get_object_or_404(Patient, pk=id)

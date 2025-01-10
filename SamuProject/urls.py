@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken import views
 from .views import LogoutView
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,7 +13,10 @@ urlpatterns = [
     path('api/v1/patients/', include('patients.urls')),
     path('api/v1/patientcares/', include('patient_cares.urls')),
     path('api/v1/authentication/login/', views.obtain_auth_token),
-    path('api/v1/authentication/logout/', LogoutView.as_view())
+    path('api/v1/authentication/logout/', LogoutView.as_view()),
+    path('api/documentation/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/documentation/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/documentation/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
 if settings.DEBUG:

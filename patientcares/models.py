@@ -3,7 +3,7 @@ from patients.models import Patient
 from doctors.models import Doctor
 from medicines.models import Medicine
 
-class Patient_care(models.Model):
+class PatientCare(models.Model):
     date = models.DateField()
     hour = models.TimeField()
     location = models.CharField(max_length=70, null=True)

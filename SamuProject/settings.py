@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'administrators',
     'doctors',
     'medicines',
-    'patient_cares',
+    'patientcares',
     'patients'
 ]
 

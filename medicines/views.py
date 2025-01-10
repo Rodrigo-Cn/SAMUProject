@@ -18,33 +18,33 @@ class MedicineView(APIView):
             medicines = Medicine.objects.all()
         paginator = MedicinePagination()
         page = paginator.paginate_queryset(medicines, request)
-        medicines_serializer = MedicineSerializer(page, many=True)
-        return paginator.get_paginated_response(medicines_serializer.data, status=status.HTTP_200_OK)
+        medicinesserializer = MedicineSerializer(page, many=True)
+        return paginator.get_paginated_response(medicinesserializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
-        medicineSerializer = MedicineSerializer(data=request.data)
-        if medicineSerializer.is_valid():
-            medicineSerializer.save()
-            return Response(medicineSerializer.validated_data, status=status.HTTP_201_CREATED)
+        medicineserializer = MedicineSerializer(data=request.data)
+        if medicineserializer.is_valid():
+            medicineserializer.save()
+            return Response(medicineserializer.validated_data, status=status.HTTP_201_CREATED)
         else:
-            return Response(medicineSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(medicineserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class MedicineViewDetail(APIView):
     #permission_classes = [IsAuthenticated]  
     
     def get(self, request, id):
         medicine = get_object_or_404(Medicine ,pk=id)
-        medicineSerializer = MedicineSerializer(medicine)
-        return Response(medicineSerializer.data)
+        medicineserializer = MedicineSerializer(medicine)
+        return Response(medicineserializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, id):
         medicine = get_object_or_404(Medicine, pk=id)
-        medicineSerializer = MedicineSerializer(medicine, data=request.data)
-        if medicineSerializer.is_valid():
-            medicineSerializer.save()
-            return Response(medicineSerializer.validated_data, status=status.HTTP_200_OK)
+        medicineserializer = MedicineSerializer(medicine, data=request.data)
+        if medicineserializer.is_valid():
+            medicineserializer.save()
+            return Response(medicineserializer.validated_data, status=status.HTTP_200_OK)
         else:
-            return Response(medicineSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(medicineserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def delete(self, request, id):
         medicine = get_object_or_404(Medicine, pk=id)

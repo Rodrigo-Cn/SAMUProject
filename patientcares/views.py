@@ -28,20 +28,32 @@ class PatientCareView(APIView):
         
 class PatientCareViewDetail(APIView):
     def get(self, request, id):
-        patientcare = get_object_or_404(PatientCare, pk=id)
+        try:
+            patientcare = PatientCare.objects.get(pk=id)
+        except PatientCare.DoesNotExist:
+            return Response({"message": "Atendimento não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         patientcareserializer = PatientCareSerializer(patientcare)
         return Response(patientcareserializer.data, status=status.HTTP_202_ACCEPTED)
     
     def put(self, request, id):
-        patientcare = get_object_or_404(PatientCare, pk=id)
-        patientcareserializer = PatientCareSerializer(patientcare , request.data)
+        try:
+            patientcare = PatientCare.objects.get(pk=id)
+        except PatientCare.DoesNotExist:
+            return Response({"message": "Atendimento não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        
+        patientcareserializer = PatientCareSerializer(patientcare, data=request.data)
         if patientcareserializer.is_valid():
             patientcareserializer.save()
-            return Response(patientcareserializer.data, status=status.HTTP_200_OK)  
+            return Response(patientcareserializer.data, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)  
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, id):
-        patientcare = get_object_or_404(PatientCare, pk=id)
+        try:
+            patientcare = PatientCare.objects.get(pk=id)
+        except PatientCare.DoesNotExist:
+            return Response({"message": "Atendimento não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         patientcare.delete()
         return Response({"message": "Atendimento deletado com sucesso."}, status=status.HTTP_204_NO_CONTENT)

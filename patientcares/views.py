@@ -10,7 +10,7 @@ class PatientCareView(APIView):
     def get(self, request):
         name = request.query_params.get('name')
         if name:
-            patientcares = PatientCare.objects.filter(name_icontains=name)
+            patientcares = PatientCare.objects.filter(name__icontains=name)
         else:
             patientcares = PatientCare.objects.all()
         pagination = PatientCarePagination

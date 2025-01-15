@@ -28,19 +28,31 @@ class PatientView(APIView):
         
 class PatientViewDetail(APIView):
     def get(self, request, id):
-        patient = get_object_or_404(Patient, pk=id)
+        try:
+            patient = Patient.objects.get(pk=id)
+        except Patient.DoesNotExist:
+            return Response({"message": "Paciente não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         patientserializer = PatientSerializer(patient)
         return Response(patientserializer.data, status=status.HTTP_202_ACCEPTED)
     
     def put(self, request, id):
-        patient = get_object_or_404(Patient, pk=id)
+        try:
+            patient = Patient.objects.get(pk=id)
+        except Patient.DoesNotExist:
+            return Response({"message": "Paciente não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        
         patientserializer = PatientSerializer(patient, data=request.data)
         if patientserializer.is_valid():
             return Response(patientserializer.validated_data, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)      
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
-        patient = get_object_or_404(Patient, pk=id)
+        try:
+            patient = Patient.objects.get(pk=id)
+        except Patient.DoesNotExist:
+            return Response({"message": "Paciente não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         patient.delete()
         return Response({"message": "Paciente deletado com sucesso."}, status=status.HTTP_204_NO_CONTENT)

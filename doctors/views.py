@@ -28,12 +28,20 @@ class DoctorView(APIView):
 
 class DoctorViewDetail(APIView):
     def get(self, request, id):
-        doctor = get_object_or_404(Doctor, pk=id)
+        try:
+            doctor = Doctor.objects.get(pk=id)
+        except Doctor.DoesNotExist:
+            return Response({"message": "Médico não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         doctor_serializer = DoctorSerializer(doctor)
         return Response(doctor_serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, id):
-        doctor = get_object_or_404(Doctor, pk=id)
+        try:
+            doctor = Doctor.objects.get(pk=id)
+        except Doctor.DoesNotExist:
+            return Response({"message": "Médico não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        
         doctor_serializer = DoctorSerializer(doctor, data=request.data)
         if doctor_serializer.is_valid():
             doctor_serializer.save()
@@ -42,6 +50,10 @@ class DoctorViewDetail(APIView):
             return Response(doctor_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
-        doctor = get_object_or_404(Doctor, pk=id)
+        try:
+            doctor = Doctor.objects.get(pk=id)
+        except Doctor.DoesNotExist:
+            return Response({"message": "Médico não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         doctor.delete()
         return Response({"message": "Médico deletado com sucesso."}, status=status.HTTP_204_NO_CONTENT)

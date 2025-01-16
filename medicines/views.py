@@ -30,15 +30,23 @@ class MedicineView(APIView):
             return Response(medicineserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class MedicineViewDetail(APIView):
-    #permission_classes = [IsAuthenticated]  
+    # permission_classes = [IsAuthenticated]  
     
     def get(self, request, id):
-        medicine = get_object_or_404(Medicine ,pk=id)
+        try:
+            medicine = Medicine.objects.get(pk=id)
+        except Medicine.DoesNotExist:
+            return Response({"message": "Medicamento não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         medicineserializer = MedicineSerializer(medicine)
         return Response(medicineserializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, id):
-        medicine = get_object_or_404(Medicine, pk=id)
+        try:
+            medicine = Medicine.objects.get(pk=id)
+        except Medicine.DoesNotExist:
+            return Response({"message": "Medicamento não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        
         medicineserializer = MedicineSerializer(medicine, data=request.data)
         if medicineserializer.is_valid():
             medicineserializer.save()
@@ -47,6 +55,10 @@ class MedicineViewDetail(APIView):
             return Response(medicineserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def delete(self, request, id):
-        medicine = get_object_or_404(Medicine, pk=id)
+        try:
+            medicine = Medicine.objects.get(pk=id)
+        except Medicine.DoesNotExist:
+            return Response({"message": "Medicamento não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
         medicine.delete()
         return Response({"message": "Medicamento deletado com sucesso."}, status=status.HTTP_204_NO_CONTENT)

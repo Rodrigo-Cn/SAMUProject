@@ -5,8 +5,10 @@ from django.shortcuts import get_object_or_404
 from .models import PatientCare
 from .paginations import PatientCarePagination
 from .serializers import PatientCareSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class PatientCareView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         name = request.query_params.get('name')
         if name:
@@ -27,6 +29,7 @@ class PatientCareView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 class PatientCareViewDetail(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, id):
         try:
             patientcare = PatientCare.objects.get(pk=id)

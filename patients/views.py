@@ -6,8 +6,10 @@ from django.shortcuts import get_object_or_404
 from .serializers import PatientSerializer
 from .paginations import PatientPaginator
 from .models import Patient
+from rest_framework.permissions import IsAuthenticated
 
 class PatientView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self ,request):
         name = request.query_params.get('name')
         if name:
@@ -27,6 +29,7 @@ class PatientView(APIView):
             return Response(patientserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class PatientViewDetail(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, id):
         try:
             patient = Patient.objects.get(pk=id)

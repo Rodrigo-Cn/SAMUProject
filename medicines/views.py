@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
 class MedicineView(APIView):
-    #permission_classes = [IsAuthenticated]  
+    permission_classes = [IsAuthenticated]  
 
     def get(self, request):
         name = request.query_params.get('name')
@@ -30,7 +30,7 @@ class MedicineView(APIView):
             return Response(medicineserializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class MedicineViewDetail(APIView):
-    # permission_classes = [IsAuthenticated]  
+    permission_classes = [IsAuthenticated]  
     
     def get(self, request, id):
         try:

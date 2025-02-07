@@ -20,5 +20,5 @@ def getUserPermission(request):
     group = user.groups.first()
 
     return Response({
-        'group': group.name if group else 'Nada',
+        'group': group.name if group else None,
     })

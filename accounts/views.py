@@ -10,7 +10,7 @@ def getUserInfo(request):
 
     return Response({
         'id': user.id,
-        'nome': user.get_full_name() or user.username,
+        'name': user.get_full_name() or user.username,
         'email': user.email,
         'group': group.name if group else None,
     })

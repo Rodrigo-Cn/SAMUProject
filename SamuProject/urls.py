@@ -14,6 +14,7 @@ urlpatterns = [
     path('api/v1/patientcares/', include('patientcares.urls')),
     path('api/v1/authentication/login/', views.obtain_auth_token),
     path('api/v1/authentication/logout/', LogoutView.as_view()),
+    path('api/v1/accounts/', include('accounts.urls')),
     path('api/documentation/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/documentation/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/documentation/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),

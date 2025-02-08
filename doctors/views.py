@@ -6,6 +6,10 @@ from .models import Doctor
 from .serializers import DoctorSerializer
 from .paginations import DoctorPagination
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import user_passes_test
+
+def isAdministrator(user):
+    return user.groups.filter(name='administrator').exists()
 
 class DoctorView(APIView):
     permission_classes = [IsAuthenticated]
@@ -20,6 +24,7 @@ class DoctorView(APIView):
         doctors_serializer = DoctorSerializer(page, many=True)
         return paginator.get_paginated_response(doctors_serializer.data)
     
+    @user_passes_test(isAdministrator, login_url='/accounts/notpermission')
     def post(self, request):
         doctor_serializer = DoctorSerializer(data=request.data)
         if doctor_serializer.is_valid():

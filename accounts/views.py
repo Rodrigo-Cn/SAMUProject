@@ -5,7 +5,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_user_info(request):
+def getUserInfo(request):
     user = request.user
 
     return Response({
@@ -16,7 +16,7 @@ def get_user_info(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_user_permission(request):
+def getUserPermission(request):
     user = request.user
     group = user.groups.first()
 
@@ -26,7 +26,7 @@ def get_user_permission(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_not_permission(request):
+def getNotPermission(request):
     return Response(
         {'message': 'Sem permissão de administrador'},
         status=status.HTTP_401_UNAUTHORIZED

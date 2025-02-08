@@ -6,7 +6,12 @@ from medicines.models import Medicine
 class PatientCare(models.Model):
     date = models.DateField()
     hour = models.TimeField()
-    location = models.CharField(max_length=70, null=True)
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    doctor = models.ManyToManyField(Doctor)
-    medicine = models.ManyToManyField(Medicine)
+    city = models.CharField(max_length=40, default="Guanambi - Bahia") 
+    street = models.CharField(max_length=64, default="Rua")
+    district = models.CharField(max_length=40, default="Bairro")
+    number = models.IntegerField(null=True, blank=True) 
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True, blank=True)
+    medicine = models.ManyToManyField(Medicine, blank=True)
+    def __str__(self):
+        return f"Atendimento {self.date} - {self.patient}"

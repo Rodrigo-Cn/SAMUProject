@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken import views
-from .views import LogoutView
+from .views import LogoutView, getChartParameters
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/v1/administrators/', include('administrators.urls')),
     path('api/v1/patients/', include('patients.urls')),
     path('api/v1/patientcares/', include('patientcares.urls')),
+    path('api/v1/chartparameters/', getChartParameters),
     path('api/v1/authentication/login/', views.obtain_auth_token),
     path('api/v1/authentication/logout/', LogoutView.as_view()),
     path('api/v1/accounts/', include('accounts.urls')),

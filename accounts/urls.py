@@ -1,8 +1,8 @@
 from django.urls import path
-from . import views
+from .views import getNotPermission, getUserInfo, getUserPermission
 
 urlpatterns = [
-    path('credentials/', views.getUserInfo, name='user_info'),
-    path('permission/', views.getUserPermission, name='user_permission'),
-    path('notpermission/', views.getNotPermission, name='user_notpermission'),
+    path('credentials/', getUserInfo, name='user_info'),
+    path('permission/', getUserPermission, name='user_permission'),
+    path('notpermission/', getNotPermission, name='user_notpermission'),
 ]

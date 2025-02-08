@@ -29,5 +29,5 @@ def getUserPermission(request):
 def getNotPermission(request):
     return Response(
         {'message': 'Sem permissão de administrador'},
-        status=status.HTTP_401_UNAUTHORIZED
+        status=status.HTTP_403_FORBIDDEN
     )

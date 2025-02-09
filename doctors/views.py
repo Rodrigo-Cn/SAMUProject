@@ -7,6 +7,7 @@ from .serializers import DoctorSerializer
 from .paginations import DoctorPagination
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import Group
 
 def isAdministrator(user):
     return user.groups.filter(name='administrator').exists()
@@ -28,8 +29,15 @@ class DoctorView(APIView):
     def post(self, request):
         doctor_serializer = DoctorSerializer(data=request.data)
         if doctor_serializer.is_valid():
-            doctor_serializer.save()
-            return Response(doctor_serializer.validated_data, status=status.HTTP_201_CREATED)
+            doctor = doctor_serializer.save()
+            
+            try:
+                group = Group.objects.get(id=3)
+                doctor.groups.add(group)
+            except Group.DoesNotExist:
+                return Response({"error": "Grupo não encontrado."}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(doctor_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(doctor_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -48,13 +48,12 @@ def getChartParameters(request):
 @permission_classes([IsAuthenticated])
 def getChartParametersTwo(request):
     try:
-        today = timezone.now().date()
+        today = timezone.localtime(timezone.now()).date()
+
         day_one = today
         day_two = today - timedelta(days=1)
         day_three = today - timedelta(days=2)
         day_four = today - timedelta(days=3)
-
-        last_addresses = PatientCare.objects.order_by('-id')[:3].values('street', 'district', 'city')
 
         return Response({
             'dayOne': day_one.strftime('%d/%m/%Y'),
@@ -65,6 +64,18 @@ def getChartParametersTwo(request):
             'dayTwoNum': PatientCare.objects.filter(date=day_two).count(),
             'dayThreeNum': PatientCare.objects.filter(date=day_three).count(),
             'dayFourNum': PatientCare.objects.filter(date=day_four).count(),
+        }, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getTable(request):
+    try:
+        last_addresses = PatientCare.objects.order_by('-id')[:3].values('street', 'district', 'city')
+
+        return Response({
             'lastAddresses': list(last_addresses)
         }, status=status.HTTP_200_OK)
     

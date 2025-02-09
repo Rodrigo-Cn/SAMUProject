@@ -49,7 +49,6 @@ def getChartParameters(request):
 def getChartParametersTwo(request):
     try:
         today = timezone.localtime(timezone.now()).date()
-
         day_one = today
         day_two = today - timedelta(days=1)
         day_three = today - timedelta(days=2)

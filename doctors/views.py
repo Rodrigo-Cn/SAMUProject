@@ -1,19 +1,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import Group
 from .models import Doctor
 from .serializers import DoctorSerializer
 from .paginations import DoctorPagination
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.models import Group
-
-def isAdministrator(user):
-    return user.groups.filter(name='administrator').exists()
+from .permissions import IsAdministrator
 
 class DoctorView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdministrator]
+
     def get(self, request):
         name = request.query_params.get('name')
         if name:
@@ -24,13 +21,12 @@ class DoctorView(APIView):
         page = paginator.paginate_queryset(doctors, request)
         doctors_serializer = DoctorSerializer(page, many=True)
         return paginator.get_paginated_response(doctors_serializer.data)
-    
-    @user_passes_test(isAdministrator, login_url='/accounts/notpermission')
+
     def post(self, request):
         doctor_serializer = DoctorSerializer(data=request.data)
         if doctor_serializer.is_valid():
             doctor = doctor_serializer.save()
-            
+
             try:
                 group = Group.objects.get(id=3)
                 doctor.groups.add(group)

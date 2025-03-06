@@ -19,7 +19,7 @@ class MedicineView(APIView):
         paginator = MedicinePagination()
         page = paginator.paginate_queryset(medicines, request)
         medicinesserializer = MedicineSerializer(page, many=True)
-        return paginator.get_paginated_response(medicinesserializer.data, status=status.HTTP_200_OK)
+        return paginator.get_paginated_response(medicinesserializer.data)
     
     def post(self, request):
         medicineserializer = MedicineSerializer(data=request.data)
